@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fontes_organizapp/createpage.dart';
 import 'initializepage.dart';
 
 
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/': (context) => Initializepage(),
+        '/create': (context) => CreatePage(),
       },
     );
   }
