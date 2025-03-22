@@ -15,10 +15,11 @@ class _CreatePageState extends State<CreatePage> {
   String _nome = '';
 
   Future<int> initializeDB(String nomedb) async {
+  nomedb='$nomedb.db';
   String path = await getDatabasesPath();
   try{
-    openDatabase(
-    join(path, 'example.db'),
+    await openDatabase(
+    join(path, '$nomedb'),
     onCreate: (database, version) async {
       await database.execute(
         "CREATE TABLE materias(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, carga INTEGER NOT NULL)"
@@ -63,12 +64,14 @@ class _CreatePageState extends State<CreatePage> {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                _nome=_controller.text;
-                if(initializeDB(_nome)==1){
+              onPressed: () async {
+                _nome = _controller.text;
+                int result = await initializeDB(_nome);
+                if (result == 1) {
                   Navigator.pushNamed(context, '/home');
+                } else {
+                  print('Erro ao criar o banco de dados!');
                 }
-                
               },
               child: Text('Criar!'),
             ),

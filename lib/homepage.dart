@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -28,8 +29,9 @@ class _HomePageState extends State<HomePage> {
         SizedBox(height: mediaQuery.size.height * 0.075),
         Divider(),
         SizedBox(height: mediaQuery.size.height * 0.075),
-        ElevatedButton(onPressed: () {
-          
+        ElevatedButton(onPressed: () async {
+           String path = await getDatabasesPath();
+           print(path);
         }, child: Text('Abrir Existente'),),
       ],),),
       bottomNavigationBar: BottomAppBar(
