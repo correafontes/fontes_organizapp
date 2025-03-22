@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 
-class Initializepage extends StatefulWidget {
-  const Initializepage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<Initializepage> createState() => _InitializepageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _InitializepageState extends State<Initializepage> {
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    return Scaffold(
+    return  Scaffold(
       body: Center(child: Column(children: [
         SizedBox(height: mediaQuery.size.height * 0.15),
         const Text(
@@ -28,8 +29,9 @@ class _InitializepageState extends State<Initializepage> {
         SizedBox(height: mediaQuery.size.height * 0.075),
         Divider(),
         SizedBox(height: mediaQuery.size.height * 0.075),
-        ElevatedButton(onPressed: () {
-          
+        ElevatedButton(onPressed: () async {
+           String path = await getDatabasesPath();
+           print(path);
         }, child: Text('Abrir Existente'),),
       ],),),
       bottomNavigationBar: BottomAppBar(
