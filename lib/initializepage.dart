@@ -23,7 +23,7 @@ class _InitializepageState extends State<Initializepage> {
         ),
         SizedBox(height: mediaQuery.size.height * 0.1),
         ElevatedButton(onPressed: () {
-          
+          Navigator.pushNamed(context, '/create');
         }, child: Text('Criar Arquivo'),),
         SizedBox(height: mediaQuery.size.height * 0.075),
         Divider(),
