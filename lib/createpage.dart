@@ -14,9 +14,10 @@ class _CreatePageState extends State<CreatePage> {
   TextEditingController _controller = TextEditingController();
   String _nome = '';
 
-  Future<Database> initializeDB(String nomedb) async {
+  Future<int> initializeDB(String nomedb) async {
   String path = await getDatabasesPath();
-  return openDatabase(
+  try{
+    openDatabase(
     join(path, 'example.db'),
     onCreate: (database, version) async {
       await database.execute(
@@ -25,9 +26,16 @@ class _CreatePageState extends State<CreatePage> {
       await database.execute(
         "CREATE TABLE faltas(id INTEGER PRIMARY KEY AUTOINCREMENT, id_materia INTEGER NOT NULL, data TEXT NOT NULL, FOREIGN KEY(id_materia) REFERENCES materias(id))"
       );
+      database.close();
     },
     version: 1,
   );
+  return 1;
+  }catch(e){
+    print(e);
+  }
+  return 0;
+  
 }
 
   @override
@@ -57,7 +65,10 @@ class _CreatePageState extends State<CreatePage> {
             ElevatedButton(
               onPressed: () {
                 _nome=_controller.text;
-                initializeDB(_nome);
+                if(initializeDB(_nome)==1){
+                  Navigator.pushNamed(context, '/home');
+                }
+                
               },
               child: Text('Criar!'),
             ),
