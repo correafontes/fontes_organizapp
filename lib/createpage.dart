@@ -20,7 +20,10 @@ class _CreatePageState extends State<CreatePage> {
     join(path, 'example.db'),
     onCreate: (database, version) async {
       await database.execute(
-        "CREATE TABLE items(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL)",
+        "CREATE TABLE materias(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, carga INTEGER NOT NULL)"
+      );
+      await database.execute(
+        "CREATE TABLE faltas(id INTEGER PRIMARY KEY AUTOINCREMENT, id_materia INTEGER NOT NULL, data TEXT NOT NULL, FOREIGN KEY(id_materia) REFERENCES materias(id))"
       );
     },
     version: 1,
