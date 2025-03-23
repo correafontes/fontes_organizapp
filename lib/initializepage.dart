@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Initializepage extends StatefulWidget {
   const Initializepage({super.key});
@@ -11,6 +12,7 @@ class _InitializepageState extends State<Initializepage> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
+
     return Scaffold(
       body: Center(child: Column(children: [
         SizedBox(height: mediaQuery.size.height * 0.15),
@@ -40,7 +42,7 @@ class _InitializepageState extends State<Initializepage> {
             Text('Desenvolvido por: '),
             TextButton(
               onPressed: () {
-                //Abrir site
+                launchUrl(Uri.parse('https://github.com/correafontes'));
               },
               child: Text('Davi Fontes')
             )
