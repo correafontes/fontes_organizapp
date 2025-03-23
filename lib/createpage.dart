@@ -22,7 +22,7 @@ class _CreatePageState extends State<CreatePage> {
     join(path, '$nomedb'),
     onCreate: (database, version) async {
       await database.execute(
-        "CREATE TABLE materias(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, carga INTEGER NOT NULL)"
+        "CREATE TABLE materias(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, hours INTEGER NOT NULL)"
       );
       await database.execute(
         "CREATE TABLE faltas(id INTEGER PRIMARY KEY AUTOINCREMENT, id_materia INTEGER NOT NULL, data TEXT NOT NULL, FOREIGN KEY(id_materia) REFERENCES materias(id))"
