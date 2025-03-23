@@ -24,15 +24,14 @@ class _HomePageState extends State<HomePage> {
         ),
         SizedBox(height: mediaQuery.size.height * 0.1),
         ElevatedButton(onPressed: () {
-          Navigator.pushNamed(context, '/create');
-        }, child: Text('Criar Arquivo'),),
+          //Abrir página de matérias
+        }, child: Text('Matérias'),),
         SizedBox(height: mediaQuery.size.height * 0.075),
         Divider(),
         SizedBox(height: mediaQuery.size.height * 0.075),
-        ElevatedButton(onPressed: () async {
-           String path = await getDatabasesPath();
-           print(path);
-        }, child: Text('Abrir Existente'),),
+        ElevatedButton(onPressed: () {
+          //Abrir página de faltas
+        }, child: Text('Faltas'),),
       ],),),
       bottomNavigationBar: BottomAppBar(
         height: mediaQuery.size.height * 0.095,

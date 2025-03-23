@@ -18,7 +18,7 @@ class _CreatePageState extends State<CreatePage> {
   nomedb='$nomedb.db';
   String path = await getDatabasesPath();
   try{
-    await await openDatabase(
+     await openDatabase(
     join(path, '$nomedb'),
     onCreate: (database, version) async {
       await database.execute(
@@ -27,7 +27,7 @@ class _CreatePageState extends State<CreatePage> {
       await database.execute(
         "CREATE TABLE faltas(id INTEGER PRIMARY KEY AUTOINCREMENT, id_materia INTEGER NOT NULL, data TEXT NOT NULL, FOREIGN KEY(id_materia) REFERENCES materias(id))"
       );
-      database.close();
+      // database.close(); // Removed this line
     },
     version: 1,
   );
