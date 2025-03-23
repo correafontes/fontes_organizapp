@@ -18,7 +18,7 @@ class _CreatePageState extends State<CreatePage> {
   nomedb='$nomedb.db';
   String path = await getDatabasesPath();
   try{
-    await openDatabase(
+    await await openDatabase(
     join(path, '$nomedb'),
     onCreate: (database, version) async {
       await database.execute(
