@@ -21,7 +21,9 @@ class _CreatePageState extends State<CreatePage> {
   try{
   String path = await getDatabasesPath();
   path = join(path, nomedb);
+  print('Caminho do banco de dados: $path');
   final db = sqlite3.open(path); 
+  print("Banco de dados criado com sucesso!");
   db.execute('''
     CREATE TABLE subject(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -72,7 +74,7 @@ class _CreatePageState extends State<CreatePage> {
               onPressed: () async {
                 _nome = _controller.text;
                 int result = await initializeDB(_nome);
-                if (result == 1) {
+                if (result==1) {
                   Navigator.pushNamed(context, '/home');
                 } else {
                   print('Erro ao criar o banco de dados!');
