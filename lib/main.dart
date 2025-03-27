@@ -3,6 +3,10 @@ import 'package:fontes_organizapp/createpage.dart';
 import 'package:fontes_organizapp/homepage.dart';
 import 'package:fontes_organizapp/createsubjects.dart';
 import 'initializepage.dart';
+import 'package:sqlite3/sqlite3.dart' as prefix;
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+
 
 
 void main() {
@@ -24,7 +28,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => Initializepage(),
         '/create': (context) => CreatePage(),
         '/home': (context) => HomePage(),
-        '/createsubjects': (context) => CreateSubjects(),
+        '/createsubjects': (context) => CreateSubjects(Database as Database),
       },
     );
   }

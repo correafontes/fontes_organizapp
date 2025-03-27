@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:sqlite3/sqlite3.dart' as prefix;
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 
 class CreateSubjects extends StatefulWidget {
-  const CreateSubjects({super.key});
+  const CreateSubjects(Database database, {super.key});
 
   @override
   State<CreateSubjects> createState() => _CreatesubjectsState();
