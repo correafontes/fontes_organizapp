@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+
 
 class CreatePage extends StatefulWidget {
   const CreatePage({super.key});
@@ -15,10 +17,30 @@ class _CreatePageState extends State<CreatePage> {
   String _nome = '';
 
   Future<int> initializeDB(String nomedb) async {
-  nomedb='/$nomedb.db';
+  nomedb='$nomedb.db';
+  try{
   String path = await getDatabasesPath();
-
-  return 0;
+  path = join(path, nomedb);
+  final db = sqlite3.open(path); 
+  db.execute('''
+    CREATE TABLE subject(
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT,
+      hours INTEGER
+    )
+  ''');
+  db.execute('''
+    CREATE TABLE absense(
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      id_subject INTEGER,
+      data TEXT
+    )
+  ''');
+  } catch (e) {
+    print(e);
+    return 0;
+  }
+  return 1;
   
 }
 

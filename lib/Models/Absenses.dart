@@ -1,7 +1,7 @@
 class Absense{
   int id;
-  int id_materia;
+  int id_subject;
   String data;
-  Absense({required this.id, required this.id_materia, required this.data});
+  Absense({required this.id, required this.id_subject, required this.data});
 
 }
