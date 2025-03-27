@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fontes_organizapp/createpage.dart';
 import 'package:fontes_organizapp/homepage.dart';
+import 'package:fontes_organizapp/createsubjects.dart';
 import 'initializepage.dart';
 
 
@@ -22,7 +23,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => Initializepage(),
         '/create': (context) => CreatePage(),
-        '/home': (context) => HomePage()
+        '/home': (context) => HomePage(),
+        '/createsubjects': (context) => CreateSubjects(),
       },
     );
   }

@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
         ),
         SizedBox(height: mediaQuery.size.height * 0.1),
         ElevatedButton(onPressed: () {
-          //Abrir página de matérias
+          Navigator.pushNamed(context, '/createSubjects');
         }, child: Text('Matérias'),),
         SizedBox(height: mediaQuery.size.height * 0.075),
         Divider(),
