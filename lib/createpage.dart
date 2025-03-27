@@ -15,26 +15,9 @@ class _CreatePageState extends State<CreatePage> {
   String _nome = '';
 
   Future<int> initializeDB(String nomedb) async {
-  nomedb='$nomedb.db';
+  nomedb='/$nomedb.db';
   String path = await getDatabasesPath();
-  try{
-     await openDatabase(
-    join(path, '$nomedb'),
-    onCreate: (database, version) async {
-      await database.execute(
-        "CREATE TABLE materias(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, hours INTEGER NOT NULL)"
-      );
-      await database.execute(
-        "CREATE TABLE faltas(id INTEGER PRIMARY KEY AUTOINCREMENT, id_materia INTEGER NOT NULL, data TEXT NOT NULL, FOREIGN KEY(id_materia) REFERENCES materias(id))"
-      );
-      // database.close(); // Removed this line
-    },
-    version: 1,
-  );
-  return 1;
-  }catch(e){
-    print(e);
-  }
+
   return 0;
   
 }
