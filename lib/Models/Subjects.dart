@@ -1,7 +1,7 @@
 class Subject {
+  int id;
   String name;
   int hours;
-  String code;
 
-  Subject({required this.name, required this.hours, required this.code});
+  Subject({required this.id, required this.name, required this.hours});
 }

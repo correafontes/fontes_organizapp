@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:sqlite3/sqlite3.dart';
 import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+
 
 class CreatePage extends StatefulWidget {
   const CreatePage({super.key});
@@ -16,26 +18,31 @@ class _CreatePageState extends State<CreatePage> {
 
   Future<int> initializeDB(String nomedb) async {
   nomedb='$nomedb.db';
-  String path = await getDatabasesPath();
   try{
-    await openDatabase(
-    join(path, '$nomedb'),
-    onCreate: (database, version) async {
-      await database.execute(
-        "CREATE TABLE materias(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, carga INTEGER NOT NULL)"
-      );
-      await database.execute(
-        "CREATE TABLE faltas(id INTEGER PRIMARY KEY AUTOINCREMENT, id_materia INTEGER NOT NULL, data TEXT NOT NULL, FOREIGN KEY(id_materia) REFERENCES materias(id))"
-      );
-      database.close();
-    },
-    version: 1,
-  );
-  return 1;
-  }catch(e){
+  String path = await getDatabasesPath();
+  path = join(path, nomedb);
+  print('Caminho do banco de dados: $path');
+  final db = sqlite3.open(path); 
+  print("Banco de dados criado com sucesso!");
+  db.execute('''
+    CREATE TABLE subject(
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT,
+      hours INTEGER
+    )
+  ''');
+  db.execute('''
+    CREATE TABLE absense(
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      id_subject INTEGER,
+      data TEXT
+    )
+  ''');
+  } catch (e) {
     print(e);
+    return 0;
   }
-  return 0;
+  return 1;
   
 }
 
@@ -67,7 +74,7 @@ class _CreatePageState extends State<CreatePage> {
               onPressed: () async {
                 _nome = _controller.text;
                 int result = await initializeDB(_nome);
-                if (result == 1) {
+                if (result==1) {
                   Navigator.pushNamed(context, '/home');
                 } else {
                   print('Erro ao criar o banco de dados!');
