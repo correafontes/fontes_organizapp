@@ -15,11 +15,12 @@ class _CreatePageState extends State<CreatePage> {
 
   TextEditingController _controller = TextEditingController();
   String _nome = '';
+  String path='';
 
   Future<int> initializeDB(String nomedb) async {
   nomedb='$nomedb.db';
   try{
-  String path = await getDatabasesPath();
+   path = await getDatabasesPath();
   path = join(path, nomedb);
   print('Caminho do banco de dados: $path');
   final db = sqlite3.open(path); 
@@ -75,7 +76,7 @@ class _CreatePageState extends State<CreatePage> {
                 _nome = _controller.text;
                 int result = await initializeDB(_nome);
                 if (result==1) {
-                  Navigator.pushNamed(context, '/home');
+                  Navigator.pushNamed(context, '/home', arguments: path);
                 } else {
                   print('Erro ao criar o banco de dados!');
                 }
