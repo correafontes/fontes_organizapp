@@ -3,10 +3,11 @@ import 'package:sqlite3/sqlite3.dart' as prefix;
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-String dbpath = '';
+
 class CreateSubjects extends StatefulWidget {
-  const CreateSubjects(this.dbpath, {super.key});
+
   final String dbpath;
+  const CreateSubjects({super.key, required this.dbpath});
 
   @override
   State<CreateSubjects> createState() => _CreatesubjectsState();
@@ -16,7 +17,14 @@ class _CreatesubjectsState extends State<CreateSubjects> {
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _hoursController = TextEditingController();
+  late String dbpath;
   
+  @override
+  void initState() {
+    dbpath= widget.dbpath; // Assign the passed value to the local variable
+    print('Caminho do banco de dados: $dbpath'); // Debug print to verify the value
+    super.initState();
+  }
 
 
 

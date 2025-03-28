@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => Initializepage(),
         '/create': (context) => CreatePage(),
         '/home': (context) => HomePage(pathdb: ModalRoute.of(context)!.settings.arguments as String),
-        '/createsubjects': (context) => CreateSubjects(''),
+        '/createSubjects': (context) => CreateSubjects(dbpath: ModalRoute.of(context)!.settings.arguments as String),
       },
     );
   }
