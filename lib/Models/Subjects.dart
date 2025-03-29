@@ -4,4 +4,5 @@ class Subject {
   int hours;
 
   Subject({required this.id, required this.name, required this.hours});
+  
 }

@@ -26,6 +26,21 @@ class _CreatesubjectsState extends State<CreateSubjects> {
     super.initState();
   }
 
+  Future <int> addSubject(String name, int hours) async {
+    try {
+      final db = prefix.sqlite3.open(dbpath); 
+      db.execute('''
+        INSERT INTO subject (name, hours)
+        VALUES (?, ?)
+      ''', [name, hours]);
+      print("Matéria adicionada com sucesso!");
+    } catch (e) {
+      print(e);
+      return 0;
+    }
+    return 1;
+  }
+
 
 
   @override
@@ -36,7 +51,6 @@ class _CreatesubjectsState extends State<CreateSubjects> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(dbpath),
             Text(
               'Criar Matérias',
               style: TextStyle(
@@ -60,7 +74,8 @@ class _CreatesubjectsState extends State<CreateSubjects> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                
+                addSubject(_nameController.text, int.parse(_hoursController.text));
+                Navigator.pop(context);
               },
               child: Text('Salvar'),
             ),

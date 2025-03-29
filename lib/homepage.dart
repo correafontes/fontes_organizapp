@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fontes_organizapp/createsubjects.dart';
+import 'package:sqlite3/sqlite3.dart' as sqlite;
+
 
 class HomePage extends StatefulWidget {
   final String pathdb;
@@ -12,6 +14,18 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late String path;
+
+  Future <bool> showSubjects() async{
+    try{
+      final db = sqlite.sqlite3.open(path); 
+      final result = db.select('SELECT * FROM subject');
+      print("Matérias: $result");
+    } catch (e) {
+      print(e);
+      return false;
+    }
+    return true;
+  }
 
   @override
   void initState() {
@@ -59,10 +73,13 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: mediaQuery.size.height * 0.075),
             ElevatedButton(
               onPressed: () {
-                // Add navigation to the "Faltas" page here
+                
               },
               child: const Text('Faltas'),
             ),
+            ElevatedButton(onPressed: () {
+              showSubjects();
+            }, child: const Text('Mostrar'),),
           ],
         ),
       ),
