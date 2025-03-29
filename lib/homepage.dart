@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fontes_organizapp/createsubjects.dart';
 import 'package:sqlite3/sqlite3.dart' as sqlite;
+import 'package:url_launcher/url_launcher.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -30,8 +30,9 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    path = widget.pathdb; // Assign the passed value to the local variable
-    print('Caminho do banco de dados: $path'); // Debug print to verify the value
+    // Atribuindo o caminho do banco de dados passado como argumento para a variável local
+    path = widget.pathdb;
+    print('Caminho do banco de dados: $path'); 
   }
 
   @override
@@ -91,7 +92,7 @@ class _HomePageState extends State<HomePage> {
             const Text('Desenvolvido por: '),
             TextButton(
               onPressed: () {
-                // Add functionality to open the developer's website
+                launchUrl(Uri.parse('https://github.com/correafontes'));
               },
               child: const Text('Davi Fontes'),
             ),

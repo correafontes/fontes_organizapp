@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 class CreatePage extends StatefulWidget {
@@ -22,9 +23,19 @@ class _CreatePageState extends State<CreatePage> {
   try{
    path = await getDatabasesPath();
   path = join(path, nomedb);
-  print('Caminho do banco de dados: $path');
   final db = sqlite3.open(path); 
-  print("Banco de dados criado com sucesso!");
+
+  //Toast de sucesso
+  Fluttertoast.showToast(
+    msg: "Banco de dados criado com sucesso!",
+    toastLength: Toast.LENGTH_SHORT,
+    gravity: ToastGravity.BOTTOM,
+    timeInSecForIosWeb: 1,
+    backgroundColor: Colors.green,
+    textColor: Colors.white,
+    fontSize: 16.0
+  );
+  //Criando tabelas
   db.execute('''
     CREATE TABLE subject(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -78,8 +89,17 @@ class _CreatePageState extends State<CreatePage> {
                 if (result==1) {
                   Navigator.pushNamed(context, '/home', arguments: path);
                 } else {
-                  print('Erro ao criar o banco de dados!');
-                }
+                    //Toast de erro
+                    Fluttertoast.showToast(
+                      msg: "Erro ao criar o banco de dados!",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                    );
+                  }
               },
               child: Text('Criar!'),
             ),
