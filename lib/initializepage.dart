@@ -11,6 +11,7 @@ class Initializepage extends StatefulWidget {
 class _InitializepageState extends State<Initializepage> {
   @override
   Widget build(BuildContext context) {
+    // Obtendo o tamanho da tela (Tamanhos Relativos)
     final mediaQuery = MediaQuery.of(context);
 
     return Scaffold(

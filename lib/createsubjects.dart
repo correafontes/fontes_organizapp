@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sqlite3/sqlite3.dart' as prefix;
+import 'package:sqlite3/sqlite3.dart' as sqlite;
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 class CreateSubjects extends StatefulWidget {
@@ -21,24 +22,36 @@ class _CreatesubjectsState extends State<CreateSubjects> {
   
   @override
   void initState() {
-    dbpath= widget.dbpath; // Assign the passed value to the local variable
-    print('Caminho do banco de dados: $dbpath'); // Debug print to verify the value
+    // Atribuindo o caminho do banco de dados passado como argumento para a variável local
+    dbpath= widget.dbpath; 
+    print('Caminho do banco de dados: $dbpath'); 
     super.initState();
   }
 
-  Future <int> addSubject(String name, int hours) async {
+  Future <bool> addSubject(String name, int hours) async {
     try {
-      final db = prefix.sqlite3.open(dbpath); 
+      final db = sqlite.sqlite3.open(dbpath); 
+      print("Caminho do banco de dadihos: $name");
+      print("Adicionando matéria: $name, Carga horária: $hours");
       db.execute('''
         INSERT INTO subject (name, hours)
         VALUES (?, ?)
       ''', [name, hours]);
       print("Matéria adicionada com sucesso!");
+      
     } catch (e) {
-      print(e);
-      return 0;
+      Fluttertoast.showToast(
+        msg: "Erro ao adicionar matéria AQui!",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
+      );
+      return false;
     }
-    return 1;
+    return true;
   }
 
 
@@ -74,8 +87,30 @@ class _CreatesubjectsState extends State<CreateSubjects> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                addSubject(_nameController.text, int.parse(_hoursController.text));
-                Navigator.pop(context);
+                if(addSubject(_nameController.text, int.parse(_hoursController.text))==Future<bool>)
+                {
+                  Fluttertoast.showToast(
+                    msg: "Matéria adicionada com sucesso!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.green,
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                  );
+                  Navigator.pop(context);
+                }
+                else{
+                  /*Fluttertoast.showToast(
+                    msg: "Erro ao adicionar matéria!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                  );*/
+                }
               },
               child: Text('Salvar'),
             ),
