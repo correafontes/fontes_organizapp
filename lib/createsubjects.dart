@@ -28,19 +28,30 @@ class _CreatesubjectsState extends State<CreateSubjects> {
     super.initState();
   }
 
-  Future <int> addSubject(String name, int hours) async {
+  Future <bool> addSubject(String name, int hours) async {
     try {
       final db = sqlite.sqlite3.open(dbpath); 
+      print("Caminho do banco de dadihos: $name");
+      print("Adicionando matéria: $name, Carga horária: $hours");
       db.execute('''
         INSERT INTO subject (name, hours)
         VALUES (?, ?)
       ''', [name, hours]);
       print("Matéria adicionada com sucesso!");
+      
     } catch (e) {
-      print(e);
-      return 0;
+      Fluttertoast.showToast(
+        msg: "Erro ao adicionar matéria AQui!",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
+      );
+      return false;
     }
-    return 1;
+    return true;
   }
 
 
@@ -76,7 +87,7 @@ class _CreatesubjectsState extends State<CreateSubjects> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                if(addSubject(_nameController.text, int.parse(_hoursController.text))==1)
+                if(addSubject(_nameController.text, int.parse(_hoursController.text))==Future<bool>)
                 {
                   Fluttertoast.showToast(
                     msg: "Matéria adicionada com sucesso!",
@@ -90,7 +101,7 @@ class _CreatesubjectsState extends State<CreateSubjects> {
                   Navigator.pop(context);
                 }
                 else{
-                  Fluttertoast.showToast(
+                  /*Fluttertoast.showToast(
                     msg: "Erro ao adicionar matéria!",
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.BOTTOM,
@@ -98,7 +109,7 @@ class _CreatesubjectsState extends State<CreateSubjects> {
                     backgroundColor: Colors.red,
                     textColor: Colors.white,
                     fontSize: 16.0
-                  );
+                  );*/
                 }
               },
               child: Text('Salvar'),
