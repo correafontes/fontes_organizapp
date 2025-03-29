@@ -1,50 +1,100 @@
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:fontes_organizapp/createsubjects.dart';
+import 'package:sqlite3/sqlite3.dart' as sqlite;
+
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final String pathdb;
+
+  const HomePage({super.key, required this.pathdb});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  late String path;
+
+  Future <bool> showSubjects() async{
+    try{
+      final db = sqlite.sqlite3.open(path); 
+      final result = db.select('SELECT * FROM subject');
+      print("Matérias: $result");
+    } catch (e) {
+      print(e);
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    path = widget.pathdb; // Assign the passed value to the local variable
+    print('Caminho do banco de dados: $path'); // Debug print to verify the value
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    return  Scaffold(
-      body: Center(child: Column(children: [
-        SizedBox(height: mediaQuery.size.height * 0.15),
-        const Text(
-          'Bem Vindo(a)!',
-          style: TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-          ),
+
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: mediaQuery.size.height * 0.15),
+            Text(
+              'Caminho do banco de dados:',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              path,
+              style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: mediaQuery.size.height * 0.1),
+            const Text(
+              'Bem Vindo(a)!',
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: mediaQuery.size.height * 0.1),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/createSubjects', arguments: path);
+              },
+              child: const Text('Matérias'),
+            ),
+            SizedBox(height: mediaQuery.size.height * 0.075),
+            const Divider(),
+            SizedBox(height: mediaQuery.size.height * 0.075),
+            ElevatedButton(
+              onPressed: () {
+                
+              },
+              child: const Text('Faltas'),
+            ),
+            ElevatedButton(onPressed: () {
+              showSubjects();
+            }, child: const Text('Mostrar'),),
+          ],
         ),
-        SizedBox(height: mediaQuery.size.height * 0.1),
-        ElevatedButton(onPressed: () {
-          //Abrir página de matérias
-        }, child: Text('Matérias'),),
-        SizedBox(height: mediaQuery.size.height * 0.075),
-        Divider(),
-        SizedBox(height: mediaQuery.size.height * 0.075),
-        ElevatedButton(onPressed: () {
-          //Abrir página de faltas
-        }, child: Text('Faltas'),),
-      ],),),
+      ),
       bottomNavigationBar: BottomAppBar(
         height: mediaQuery.size.height * 0.095,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Desenvolvido por: '),
+            const Text('Desenvolvido por: '),
             TextButton(
               onPressed: () {
-                //Abrir site
+                // Add functionality to open the developer's website
               },
-              child: Text('Davi Fontes')
-            )
+              child: const Text('Davi Fontes'),
+            ),
           ],
         ),
       ),
