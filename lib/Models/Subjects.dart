@@ -34,12 +34,14 @@ class Subject {
           title: Text(subject.name),
           subtitle: Text('Horas: ${subject.hours}'),
           trailing: IconButton(
-            icon: const Icon(Icons.delete),
+            icon: const Icon(Icons.edit),
             onPressed: () {
-              // Lógica para excluir a matéria
+              // Lógica para editar
             },
           ),
-          
+          onLongPress: () {
+            // Lógica para excluir matéria
+          },
         ),
       ),);
     }).toList();
