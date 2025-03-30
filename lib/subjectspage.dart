@@ -52,16 +52,23 @@ class _SubjectsPageState extends State<SubjectsPage> {
     });
     super.initState();
   }
-
-
   
-
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     return Scaffold(
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
             children: [
+              Padding(padding: const EdgeInsets.only(top: 50)),
+              Text(
+                'Matérias',
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: mediaQuery.size.height * 0.1),
             FutureBuilder<List<Widget>>(
               future: loadSubjects(),
               builder: (context, snapshot) {
