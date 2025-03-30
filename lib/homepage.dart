@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sqlite3/sqlite3.dart' as sqlite;
 import 'package:url_launcher/url_launcher.dart';
+import 'Models/Subjects.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -14,18 +15,25 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late String path;
+  List<Subject> subjects = [];
 
-  Future <bool> showSubjects() async{
+  Future <List<Subject>> showSubjects() async{
     try{
       final db = sqlite.sqlite3.open(path); 
       final result = db.select('SELECT * FROM subject');
       print("Matérias: $result");
+      subjects = result.map((result) => Subject.fromMap(result)).toList();
+      print("Matérias: $subjects");
+      db.dispose();
+
     } catch (e) {
       print(e);
-      return false;
+      print("Erro ao abrir o banco de dados.");
+      return [];
     }
-    return true;
+    return subjects;
   }
+
 
   @override
   void initState() {
@@ -44,17 +52,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: mediaQuery.size.height * 0.15),
-            Text(
-              'Caminho do banco de dados:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              path,
-              style: TextStyle(fontSize: 16, color: Colors.grey[700]),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: mediaQuery.size.height * 0.1),
+            SizedBox(height: mediaQuery.size.height * 0.25),
             const Text(
               'Bem Vindo(a)!',
               style: TextStyle(
@@ -71,7 +69,6 @@ class _HomePageState extends State<HomePage> {
             ),
             SizedBox(height: mediaQuery.size.height * 0.075),
             const Divider(),
-            SizedBox(height: mediaQuery.size.height * 0.075),
             ElevatedButton(
               onPressed: () {
                 
@@ -80,7 +77,23 @@ class _HomePageState extends State<HomePage> {
             ),
             ElevatedButton(onPressed: () {
               showSubjects();
+              setState(() {
+                // Atualiza a tela após buscar as matérias
+              });
             }, child: const Text('Mostrar'),),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.all(8),
+              
+              itemCount: subjects.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(subjects[index].name),
+                  subtitle: Text('Horas: ${subjects[index].hours}'),
+                );
+              },
+            ),
           ],
         ),
       ),
