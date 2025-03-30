@@ -15,32 +15,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late String path;
-  List<Subject> subjects = [];
-
-  Future <List<Subject>> showSubjects() async{
-    try{
-      final db = sqlite.sqlite3.open(path); 
-      final result = db.select('SELECT * FROM subject');
-      print("Matérias: $result");
-      subjects = result.map((result) => Subject.fromMap(result)).toList();
-      print("Matérias: $subjects");
-      db.dispose();
-
-    } catch (e) {
-      print(e);
-      print("Erro ao abrir o banco de dados.");
-      return [];
-    }
-    return subjects;
-  }
-
-
   @override
   void initState() {
     super.initState();
     // Atribuindo o caminho do banco de dados passado como argumento para a variável local
     path = widget.pathdb;
-    print('Caminho do banco de dados: $path'); 
   }
 
   @override
@@ -76,26 +55,8 @@ class _HomePageState extends State<HomePage> {
               child: const Text('Faltas'),
             ),
             ElevatedButton(onPressed: () {
-              /*showSubjects();
-              setState(() {
-                // Atualiza a tela após buscar as matérias
-
-              });*/
               Navigator.pushNamed(context, '/subjects', arguments: path);
             }, child: const Text('Mostrar'),),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.all(8),
-              
-              itemCount: subjects.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(subjects[index].name),
-                  subtitle: Text('Horas: ${subjects[index].hours}'),
-                );
-              },
-            ),
           ],
         ),
       ),
