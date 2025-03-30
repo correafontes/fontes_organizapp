@@ -1,8 +1,8 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:sqlite3/sqlite3.dart';
+import 'package:sqlite3/sqlite3.dart' as sqlite;
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart' as modalbottom;
 class Subject {
   // Identificador único da matéria
   int id;
@@ -24,7 +24,7 @@ class Subject {
     );
   }
   // Método widget builder para exibir a matéria em um Card recebendo uma lista de Materias
-  List<Widget> buildSubjectCard(List<Subject> subjects) {
+  List<Widget> buildSubjectCard(BuildContext context, List<Subject> subjects) {
     return subjects.map((subject) {
       return Padding(
         padding: EdgeInsets.fromLTRB(10, 0, 10, 20),
@@ -40,7 +40,41 @@ class Subject {
             },
           ),
           onLongPress: () {
-            // Lógica para excluir matéria
+            // Lógica para excluir
+            modalbottom.showMaterialModalBottomSheet(
+              context: context,
+              builder: (context) => Container(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Deseja excluir a matéria?',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            // Lógica para confirmar exclusão
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('Sim'),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('Não'),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
           },
         ),
       ),);
