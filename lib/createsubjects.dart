@@ -88,7 +88,7 @@ class _CreatesubjectsState extends State<CreateSubjects> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed:  () async{
-                bool resultado = await(addSubject(_hoursController.text, int.parse(_hoursController.text)));
+                bool resultado = await(addSubject(_nameController.text, int.parse(_hoursController.text)));
                 if(resultado){
                   Fluttertoast.showToast(
                     msg: "Matéria adicionada com sucesso!",
