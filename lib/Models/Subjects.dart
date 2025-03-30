@@ -27,9 +27,10 @@ class Subject {
   List<Widget> buildSubjectCard(List<Subject> subjects) {
     return subjects.map((subject) {
       return Padding(
-        padding: EdgeInsets.only(bottom: 20),
+        padding: EdgeInsets.fromLTRB(10, 0, 10, 20),
         child: Card(
         child: ListTile(
+          leading: Text('${subject.id}'),
           title: Text(subject.name),
           subtitle: Text('Horas: ${subject.hours}'),
           trailing: IconButton(
@@ -38,6 +39,7 @@ class Subject {
               // Lógica para excluir a matéria
             },
           ),
+          
         ),
       ),);
     }).toList();
