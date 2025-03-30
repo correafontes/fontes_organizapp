@@ -23,4 +23,23 @@ class Subject {
       hours: map['hours'] as int,
     );
   }
+  // Método widget builder para exibir a matéria em um Card recebendo uma lista de Materias
+  List<Widget> buildSubjectCard(List<Subject> subjects) {
+    return subjects.map((subject) {
+      return Padding(
+        padding: EdgeInsets.only(bottom: 20),
+        child: Card(
+        child: ListTile(
+          title: Text(subject.name),
+          subtitle: Text('Horas: ${subject.hours}'),
+          trailing: IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () {
+              // Lógica para excluir a matéria
+            },
+          ),
+        ),
+      ),);
+    }).toList();
+  }
 }

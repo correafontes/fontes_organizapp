@@ -76,10 +76,12 @@ class _HomePageState extends State<HomePage> {
               child: const Text('Faltas'),
             ),
             ElevatedButton(onPressed: () {
-              showSubjects();
+              /*showSubjects();
               setState(() {
                 // Atualiza a tela após buscar as matérias
-              });
+
+              });*/
+              Navigator.pushNamed(context, '/subjects', arguments: path);
             }, child: const Text('Mostrar'),),
             ListView.builder(
               shrinkWrap: true,
