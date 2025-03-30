@@ -38,6 +38,7 @@ class _CreatesubjectsState extends State<CreateSubjects> {
         VALUES (?, ?)
       ''', [name, hours]);
       print("Matéria adicionada com sucesso!");
+      db.dispose();
       
     } catch (e) {
       Fluttertoast.showToast(
@@ -86,9 +87,9 @@ class _CreatesubjectsState extends State<CreateSubjects> {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                if(addSubject(_nameController.text, int.parse(_hoursController.text))==Future<bool>)
-                {
+              onPressed:  () async{
+                bool resultado = await(addSubject(_nameController.text, int.parse(_hoursController.text)));
+                if(resultado){
                   Fluttertoast.showToast(
                     msg: "Matéria adicionada com sucesso!",
                     toastLength: Toast.LENGTH_SHORT,
@@ -101,7 +102,7 @@ class _CreatesubjectsState extends State<CreateSubjects> {
                   Navigator.pop(context);
                 }
                 else{
-                  /*Fluttertoast.showToast(
+                  Fluttertoast.showToast(
                     msg: "Erro ao adicionar matéria!",
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.BOTTOM,
@@ -109,7 +110,7 @@ class _CreatesubjectsState extends State<CreateSubjects> {
                     backgroundColor: Colors.red,
                     textColor: Colors.white,
                     fontSize: 16.0
-                  );*/
+                  );
                 }
               },
               child: Text('Salvar'),
