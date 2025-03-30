@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-
+    int _selectedIndex=0;
     return Scaffold(
       body: Center(
         child: Column(
@@ -60,21 +60,42 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        height: mediaQuery.size.height * 0.095,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('Desenvolvido por: '),
-            TextButton(
-              onPressed: () {
-                launchUrl(Uri.parse('https://github.com/correafontes'));
-              },
-              child: const Text('Davi Fontes'),
-            ),
-          ],
+      bottomNavigationBar: BottomNavigationBar(items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
         ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.book),
+          label: 'Matérias',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.warning_amber_rounded),
+          label: 'Faltas',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.settings),
+          label: 'Configurações',
+        ),
+      ],
+      currentIndex: _selectedIndex,
+      onTap: (index) {
+        switch(index){
+          case 0:
+          case 1:
+          Navigator.pushNamed(context, '/subjects', arguments: path);
+          case 2:
+            Navigator.pushNamed(context, '/createSubjects', arguments: path);
+          case 3:
+          default: break;
+
+
+        }
+
+      },
+      backgroundColor: Colors.blueGrey,
       ),
+      
     );
   }
 }
