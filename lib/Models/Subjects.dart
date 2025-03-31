@@ -24,7 +24,8 @@ class Subject {
       hours: map['hours'] as int,
     );
   }
-
+    // Método para excluir uma matéria do banco de dados
+    // Recebe o ID da matéria a ser excluída e o caminho do banco de dados
     Future<bool> deleteSubject(int id,String path) async {
       try{
         final db = sqlite.sqlite3.open(path);
@@ -57,6 +58,37 @@ class Subject {
       finally{
         // Fechar a conexão com o banco de dados
         
+      }
+      return true;
+    }
+    Future<bool> updateSubject(int id, String name, int hours,String path) async {
+      try{
+        final db = sqlite.sqlite3.open(path);
+        // Executa a instrução SQL para atualizar a matéria com o ID fornecido
+        db.execute('UPDATE subject SET name = ?, hours = ? WHERE id = ?', [name, hours, id]);
+        Fluttertoast.showToast(
+          msg: 'Matéria atualizada com sucesso!',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0
+        );
+        db.dispose();
+      }
+      catch(e){
+        // Se ocorrer um erro, exibe uma mensagem de erro
+        Fluttertoast.showToast(
+          msg: 'Erro ao atualizar a matéria: $e',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+        );
+        return false;
       }
       return true;
     }
