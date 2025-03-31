@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fontes_organizapp/Models/Subjects.dart';
 import 'package:sqlite3/sqlite3.dart' as sqlite;
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart' as modalbottom;
 
 class SubjectsPage extends StatefulWidget {
   final String path;
@@ -35,7 +36,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
     try {
       showSubjects();
       Subject subject = Subject(id: 0, name: '', hours: 0);
-      subjectCards=subject.buildSubjectCard(subjects);
+      subjectCards=subject.buildSubjectCard(context,subjects,path);
     } catch (e) {
       print(e);
       print("Erro ao abrir o banco de dados.");
