@@ -36,7 +36,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
     try {
       showSubjects();
       Subject subject = Subject(id: 0, name: '', hours: 0);
-      subjectCards=subject.buildSubjectCard(context,subjects);
+      subjectCards=subject.buildSubjectCard(context,subjects,path);
     } catch (e) {
       print(e);
       print("Erro ao abrir o banco de dados.");

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sqlite3/sqlite3.dart' as sqlite;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart' as modalbottom;
+import 'package:fluttertoast/fluttertoast.dart';
 class Subject {
   // Identificador único da matéria
   int id;
@@ -23,61 +24,103 @@ class Subject {
       hours: map['hours'] as int,
     );
   }
+
+    Future<bool> deleteSubject(int id,String path) async {
+      try{
+        final db = sqlite.sqlite3.open(path);
+        // Executa a instrução SQL para excluir a matéria com o ID fornecido
+        db.execute('DELETE FROM subject WHERE id = ?', [id]);
+        print('Matéria excluída com sucesso!');
+        Fluttertoast.showToast(
+          msg: 'Matéria excluída com sucesso!',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0
+        );
+        db.dispose();
+      }
+      catch(e){
+        print('Erro ao excluir a matéria: $e');
+        return false;
+      }
+      finally{
+        // Fechar a conexão com o banco de dados
+        
+      }
+      return true;
+    }
+
   // Método widget builder para exibir a matéria em um Card recebendo uma lista de Materias
-  List<Widget> buildSubjectCard(BuildContext context, List<Subject> subjects) {
+  List<Widget> buildSubjectCard(BuildContext context, List<Subject> subjects,String path) {
     return subjects.map((subject) {
-      return Padding(
-        padding: EdgeInsets.fromLTRB(10, 0, 10, 20),
-        child: Card(
-        child: ListTile(
-          leading: Text('${subject.id}'),
-          title: Text(subject.name),
-          subtitle: Text('Horas: ${subject.hours}'),
-          trailing: IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () {
-              // Lógica para editar
-            },
-          ),
-          onLongPress: () {
-            // Lógica para excluir
-            modalbottom.showMaterialModalBottomSheet(
-              context: context,
-              builder: (context) => Container(
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'Deseja excluir a matéria?',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            // Lógica para confirmar exclusão
-                            Navigator.of(context).pop();
-                          },
-                          child: Text('Sim'),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text('Não'),
-                        ),
-                      ],
-                    ),
-                  ],
+      return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          return Padding(
+            padding: EdgeInsets.fromLTRB(10, 0, 10, 20),
+            child: Card(
+              child: ListTile(
+                leading: Text('${subject.id}'),
+                title: Text(subject.name),
+                subtitle: Text('Horas: ${subject.hours}'),
+                trailing: IconButton(
+                  icon: const Icon(Icons.edit),
+                  onPressed: () {
+                    // Lógica para editar
+                  },
                 ),
+                onLongPress: () {
+                  // Lógica para excluir
+                  modalbottom.showMaterialModalBottomSheet(
+                    context: context,
+                    builder: (context) => Container(
+                      padding: EdgeInsets.all(20),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Deseja excluir a matéria?',
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  deleteSubject(subject.id, path);
+                                  //atualiza a lista de matérias
+                                  subjects.remove(subject);
+                                  //atualiza a tela
+                                  // Fecha o modal
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Sim'),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Não'),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                  setState(() {
+                    // Atualiza o estado se necessário
+                  });
+                },
               ),
-            );
-          },
-        ),
-      ),);
+            ),
+          );
+        },
+      );
     }).toList();
+    
   }
 }
