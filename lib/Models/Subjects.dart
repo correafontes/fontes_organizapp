@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:sqlite3/sqlite3.dart' as sqlite;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart' as modalbottom;
 import 'package:fluttertoast/fluttertoast.dart';
+
 class Subject {
   // Identificador único da matéria
   int id;
@@ -24,82 +25,74 @@ class Subject {
       hours: map['hours'] as int,
     );
   }
-    // Método para excluir uma matéria do banco de dados
-    // Recebe o ID da matéria a ser excluída e o caminho do banco de dados
-    Future<bool> deleteSubject(int id,String path) async {
-      try{
-        final db = sqlite.sqlite3.open(path);
-        // Executa a instrução SQL para excluir a matéria com o ID fornecido
-        db.execute('DELETE FROM subject WHERE id = ?', [id]);
-        Fluttertoast.showToast(
-          msg: 'Matéria excluída com sucesso!',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 16.0
-        );
-        db.dispose();
-      }
-      catch(e){
-        // Se ocorrer um erro, exibe uma mensagem de erro
-        Fluttertoast.showToast(
-          msg: 'Erro ao excluir a matéria: $e',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0
-        );
-        return false;
-      }
-      finally{
-        // Fechar a conexão com o banco de dados
-        
-      }
-      return true;
+
+  // Método para excluir uma matéria do banco de dados
+  Future<bool> deleteSubject(int id, String path) async {
+    try {
+      final db = sqlite.sqlite3.open(path);
+      db.execute('DELETE FROM subject WHERE id = ?', [id]);
+      Fluttertoast.showToast(
+        msg: 'Matéria excluída com sucesso!',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      db.dispose();
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: 'Erro ao excluir a matéria: $e',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      return false;
     }
-    Future<bool> updateSubject(int id, String name, int hours,String path) async {
-      try{
-        final db = sqlite.sqlite3.open(path);
-        // Executa a instrução SQL para atualizar a matéria com o ID fornecido
-        db.execute('UPDATE subject SET name = ?, hours = ? WHERE id = ?', [name, hours, id]);
-        Fluttertoast.showToast(
-          msg: 'Matéria atualizada com sucesso!',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 16.0
-        );
-        db.dispose();
-      }
-      catch(e){
-        // Se ocorrer um erro, exibe uma mensagem de erro
-        Fluttertoast.showToast(
-          msg: 'Erro ao atualizar a matéria: $e',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0
-        );
-        return false;
-      }
-      return true;
+    return true;
+  }
+
+  // Método para atualizar uma matéria no banco de dados
+  Future<bool> updateSubject(int id, String name, int hours, String path) async {
+    try {
+      final db = sqlite.sqlite3.open(path);
+      db.execute('UPDATE subject SET name = ?, hours = ? WHERE id = ?', [name, hours, id]);
+      Fluttertoast.showToast(
+        msg: 'Matéria atualizada com sucesso!',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      db.dispose();
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: 'Erro ao atualizar a matéria: $e',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      return false;
     }
+    return true;
+  }
 
   // Método widget builder para exibir a matéria em um Card recebendo uma lista de Materias
-  List<Widget> buildSubjectCard(BuildContext context, List<Subject> subjects,String path) {
+  List<Widget> buildSubjectCard(BuildContext context, List<Subject> subjects, String path) {
     return subjects.map((subject) {
       return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
           return Padding(
-            padding: EdgeInsets.fromLTRB(10, 0, 10, 20),
+            padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
             child: Card(
               child: ListTile(
                 leading: Text('${subject.id}'),
@@ -108,7 +101,6 @@ class Subject {
                 trailing: IconButton(
                   icon: const Icon(Icons.edit),
                   onPressed: () {
-                    // Lógica para editar
                     modalbottom.showMaterialModalBottomSheet(
                       isDismissible: false,
                       expand: true,
@@ -123,74 +115,65 @@ class Subject {
                             children: [
                               Text(
                                 'Editar Matéria',
-                                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(height: 20),
+                              const SizedBox(height: 20),
                               TextField(
                                 controller: nameController,
-                                decoration: InputDecoration(labelText: 'Nome da Matéria'),
+                                decoration: const InputDecoration(labelText: 'Nome da Matéria'),
                               ),
                               TextField(
                                 controller: hoursController,
-                                decoration: InputDecoration(labelText: 'Horas'),
+                                decoration: const InputDecoration(labelText: 'Horas'),
                                 keyboardType: TextInputType.number,
                               ),
-                              SizedBox(height: 20),
+                              const SizedBox(height: 20),
                               ElevatedButton(
                                 onPressed: () {
-                                  // Atualiza a matéria no banco de dados
                                   updateSubject(subject.id, nameController.text, int.parse(hoursController.text), path);
-                                  // Atualiza a lista de matérias
                                   subject.name = nameController.text;
                                   subject.hours = int.parse(hoursController.text);
-                                  // Fecha o modal
                                   Navigator.of(context).pop();
                                 },
-                                child: Text('Salvar'),
+                                child: const Text('Salvar'),
                               ),
                             ],
                           ),
                         );
                       },
                     );
-                    setState(() {
-                      // Atualiza o estado se necessário
-                    });
+                    setState(() {});
                   },
                 ),
                 onLongPress: () {
-                  // Lógica para excluir
                   modalbottom.showMaterialModalBottomSheet(
                     context: context,
                     builder: (context) => Container(
-                      padding: EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(20),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
+                          const Text(
                             'Deseja excluir a matéria?',
                             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               ElevatedButton(
                                 onPressed: () {
                                   deleteSubject(subject.id, path);
-                                  //atualiza a lista de matérias
                                   subjects.remove(subject);
-                                  //atualiza a tela
-                                  // Fecha o modal
                                   Navigator.of(context).pop();
                                 },
-                                child: Text('Sim'),
+                                child: const Text('Sim'),
                               ),
                               ElevatedButton(
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
-                                child: Text('Não'),
+                                child: const Text('Não'),
                               ),
                             ],
                           ),
@@ -198,9 +181,7 @@ class Subject {
                       ),
                     ),
                   );
-                  setState(() {
-                    // Atualiza o estado se necessário
-                  });
+                  setState(() {});
                 },
               ),
             ),
@@ -208,6 +189,5 @@ class Subject {
         },
       );
     }).toList();
-    
   }
 }
