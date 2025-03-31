@@ -30,7 +30,6 @@ class Subject {
         final db = sqlite.sqlite3.open(path);
         // Executa a instrução SQL para excluir a matéria com o ID fornecido
         db.execute('DELETE FROM subject WHERE id = ?', [id]);
-        print('Matéria excluída com sucesso!');
         Fluttertoast.showToast(
           msg: 'Matéria excluída com sucesso!',
           toastLength: Toast.LENGTH_SHORT,
@@ -43,7 +42,16 @@ class Subject {
         db.dispose();
       }
       catch(e){
-        print('Erro ao excluir a matéria: $e');
+        // Se ocorrer um erro, exibe uma mensagem de erro
+        Fluttertoast.showToast(
+          msg: 'Erro ao excluir a matéria: $e',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+        );
         return false;
       }
       finally{
