@@ -109,6 +109,53 @@ class Subject {
                   icon: const Icon(Icons.edit),
                   onPressed: () {
                     // Lógica para editar
+                    modalbottom.showMaterialModalBottomSheet(
+                      isDismissible: false,
+                      expand: true,
+                      context: context,
+                      builder: (context) {
+                        TextEditingController nameController = TextEditingController(text: subject.name);
+                        TextEditingController hoursController = TextEditingController(text: subject.hours.toString());
+                        return Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'Editar Matéria',
+                                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 20),
+                              TextField(
+                                controller: nameController,
+                                decoration: InputDecoration(labelText: 'Nome da Matéria'),
+                              ),
+                              TextField(
+                                controller: hoursController,
+                                decoration: InputDecoration(labelText: 'Horas'),
+                                keyboardType: TextInputType.number,
+                              ),
+                              SizedBox(height: 20),
+                              ElevatedButton(
+                                onPressed: () {
+                                  // Atualiza a matéria no banco de dados
+                                  updateSubject(subject.id, nameController.text, int.parse(hoursController.text), path);
+                                  // Atualiza a lista de matérias
+                                  subject.name = nameController.text;
+                                  subject.hours = int.parse(hoursController.text);
+                                  // Fecha o modal
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Salvar'),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                    setState(() {
+                      // Atualiza o estado se necessário
+                    });
                   },
                 ),
                 onLongPress: () {
