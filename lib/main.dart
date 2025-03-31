@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fontes_organizapp/createpage.dart';
 import 'package:fontes_organizapp/homepage.dart';
 import 'package:fontes_organizapp/createsubjects.dart';
+import 'package:fontes_organizapp/subjectspage.dart';
 import 'initializepage.dart';
 
 void main() {
@@ -28,6 +29,8 @@ class MyApp extends StatelessWidget {
         '/home': (context) => HomePage(pathdb: ModalRoute.of(context)!.settings.arguments as String),
         // Página de criação de matérias (Argumento: caminho do banco de dados)
         '/createSubjects': (context) => CreateSubjects(dbpath: ModalRoute.of(context)!.settings.arguments as String),
+        // Página de matérias (Argumento: caminho do banco de dados)
+        '/subjects': (context) => SubjectsPage(path: ModalRoute.of(context)!.settings.arguments as String),
       },
     );
   }

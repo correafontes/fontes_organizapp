@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sqlite3/sqlite3.dart' as sqlite;
 import 'package:url_launcher/url_launcher.dart';
+import 'Models/Subjects.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -14,47 +15,23 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late String path;
-
-  Future <bool> showSubjects() async{
-    try{
-      final db = sqlite.sqlite3.open(path); 
-      final result = db.select('SELECT * FROM subject');
-      print("Matérias: $result");
-    } catch (e) {
-      print(e);
-      return false;
-    }
-    return true;
-  }
-
   @override
   void initState() {
     super.initState();
     // Atribuindo o caminho do banco de dados passado como argumento para a variável local
     path = widget.pathdb;
-    print('Caminho do banco de dados: $path'); 
   }
 
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-
+    int _selectedIndex=0;
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: mediaQuery.size.height * 0.15),
-            Text(
-              'Caminho do banco de dados:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              path,
-              style: TextStyle(fontSize: 16, color: Colors.grey[700]),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: mediaQuery.size.height * 0.1),
+            SizedBox(height: mediaQuery.size.height * 0.25),
             const Text(
               'Bem Vindo(a)!',
               style: TextStyle(
@@ -71,7 +48,6 @@ class _HomePageState extends State<HomePage> {
             ),
             SizedBox(height: mediaQuery.size.height * 0.075),
             const Divider(),
-            SizedBox(height: mediaQuery.size.height * 0.075),
             ElevatedButton(
               onPressed: () {
                 
@@ -79,26 +55,48 @@ class _HomePageState extends State<HomePage> {
               child: const Text('Faltas'),
             ),
             ElevatedButton(onPressed: () {
-              showSubjects();
+              Navigator.pushNamed(context, '/subjects', arguments: path);
             }, child: const Text('Mostrar'),),
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        height: mediaQuery.size.height * 0.095,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('Desenvolvido por: '),
-            TextButton(
-              onPressed: () {
-                launchUrl(Uri.parse('https://github.com/correafontes'));
-              },
-              child: const Text('Davi Fontes'),
-            ),
-          ],
+      bottomNavigationBar: BottomNavigationBar(items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
         ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.book),
+          label: 'Matérias',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.warning_amber_rounded),
+          label: 'Faltas',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.settings),
+          label: 'Configurações',
+        ),
+      ],
+      currentIndex: _selectedIndex,
+      onTap: (index) {
+        switch(index){
+          case 0:
+          case 1:
+          Navigator.pushNamed(context, '/subjects', arguments: path);
+          case 2:
+            Navigator.pushNamed(context, '/createSubjects', arguments: path);
+          case 3:
+          default: break;
+
+
+        }
+
+      },
+      backgroundColor: Colors.blueGrey,
+      
       ),
+      
     );
   }
 }
