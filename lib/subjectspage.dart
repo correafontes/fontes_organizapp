@@ -57,7 +57,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    int _selectedIndex=0;
+    int _selectedIndex=1;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -112,10 +112,11 @@ class _SubjectsPageState extends State<SubjectsPage> {
       onTap: (index) {
         switch(index){
           case 0:
+          Navigator.popAndPushNamed(context, '/home',arguments: path);
           case 1:
-          Navigator.pushNamed(context, '/subjects', arguments: path);
+          Navigator.popAndPushNamed(context, '/subjects', arguments: path);
           case 2:
-            Navigator.pushNamed(context, '/createSubjects', arguments: path);
+            Navigator.popAndPushNamed(context, '/createSubjects', arguments: path);
           case 3:
           default: break;
 
@@ -123,9 +124,19 @@ class _SubjectsPageState extends State<SubjectsPage> {
         }
 
       },
-      backgroundColor: Colors.blueGrey,
-      
+      backgroundColor: Colors.deepPurpleAccent,
+      selectedItemColor: Colors.white70,
+      unselectedItemColor: Colors.black54,
+      showSelectedLabels: true,
+      type: BottomNavigationBarType.fixed,
+      selectedIconTheme: const IconThemeData(
+        color: Colors.white,
+        size: 20,
       ),
+      unselectedIconTheme: const IconThemeData(
+        color: Colors.black,
+        size: 18,
+      )),
     );
   }
 }

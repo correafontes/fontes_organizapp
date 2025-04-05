@@ -65,6 +65,15 @@ class _CreatesubjectsState extends State<CreateSubjects> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Row(mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,children: [
+              IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],),
             Text(
               'Criar Matérias',
               style: TextStyle(

@@ -82,6 +82,7 @@ class _HomePageState extends State<HomePage> {
       onTap: (index) {
         switch(index){
           case 0:
+          Navigator.popAndPushNamed(context, '/home', arguments: path);
           case 1:
           Navigator.pushNamed(context, '/subjects', arguments: path);
           case 2:
@@ -93,9 +94,19 @@ class _HomePageState extends State<HomePage> {
         }
 
       },
-      backgroundColor: Colors.blueGrey,
-      
+      backgroundColor: Colors.deepPurpleAccent,
+      selectedItemColor: Colors.white70,
+      unselectedItemColor: Colors.black54,
+      showSelectedLabels: true,
+      type: BottomNavigationBarType.fixed,
+      selectedIconTheme: const IconThemeData(
+        color: Colors.white,
+        size: 20,
       ),
+      unselectedIconTheme: const IconThemeData(
+        color: Colors.black,
+        size: 18,
+      )),
       
     );
   }
